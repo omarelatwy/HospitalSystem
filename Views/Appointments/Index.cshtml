@@ -1,0 +1,32 @@
+@model IEnumerable<HospitalSystem.Models.Appointment>
+@{
+    ViewData["Title"] = "Booked Appointments";
+}
+
+<h2 class="mb-4">All Booked Appointments</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped align-middle shadow-sm bg-white rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@item.PatientName</td>
+                    <td>@item.Doctor?.Name</td>
+                    <td><span class="badge bg-info text-dark">@item.Doctor?.Specialization</span></td>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Time.ToString("hh:mm tt")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

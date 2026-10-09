@@ -1,0 +1,43 @@
+@model HospitalSystem.Models.Appointment
+@{
+    ViewData["Title"] = "Book Appointment";
+    var doctor = ViewBag.Doctor as HospitalSystem.Models.Doctor;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Book Appointment with @doctor?.Name</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Specialization: <strong>@doctor?.Specialization</strong></p>
+
+                <form asp-action="Book" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="DoctorId" />
+
+                    <div class="mb-3">
+                        <label asp-for="PatientName" class="form-label">Patient Name</label>
+                        <input asp-for="PatientName" class="form-control" required />
+                        <span asp-validation-for="PatientName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Date" class="form-label">Date (Sunday - Thursday)</label>
+                        <input asp-for="Date" type="date" class="form-control" required />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Time" class="form-label">Time (9:00 AM - 4:30 PM, Every 30 mins)</label>
+                        <input asp-for="Time" type="time" step="1800" class="form-control" required />
+                        <span asp-validation-for="Time" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

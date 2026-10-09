@@ -1,0 +1,62 @@
+@model IEnumerable<HospitalSystem.Models.Doctor>
+@{
+    ViewData["Title"] = "Available Doctors";
+}
+
+<h2 class="mb-4">Available Doctors</h2>
+
+<!-- Filtering Options -->
+<form method="get" class="row g-3 mb-4 card p-3 shadow-sm border-0">
+    <div class="col-md-5">
+        <input type="text" name="searchName" value="@ViewBag.SearchName" class="form-control" placeholder="Search by Doctor Name..." />
+    </div>
+    <div class="col-md-5">
+        <select name="specialization" class="form-select">
+            <option value="">All Specializations</option>
+            @if (ViewBag.Specializations != null)
+            {
+                foreach (var spec in (List<string>)ViewBag.Specializations)
+                {
+                    <option value="@spec" selected="@(ViewBag.Specialization == spec ? "selected" : null)">@spec</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+
+<!-- Doctors Grid -->
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    @foreach (var doctor in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm text-center border-0">
+                <img src="@doctor.ImageUrl" class="card-img-top rounded-circle mx-auto mt-3" style="width: 120px; height: 120px; object-fit: cover;" alt="@doctor.Name">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">@doctor.Name</h5>
+                    <p class="card-text text-muted">@doctor.Specialization</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-3">
+                    <a asp-action="Book" asp-route-doctorId="@doctor.Id" class="btn btn-outline-primary btn-sm w-100">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Pagination -->
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-searchName="@ViewBag.SearchName" asp-route-specialization="@ViewBag.Specialization">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
